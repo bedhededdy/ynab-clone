@@ -3,17 +3,19 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { UserContext } from "@/components/contexts/UserContext";
 
-import User from "@/types/User";
+import User from "@/views/User";
 
 import Login from "@/components/Login";
 import Home from "@/components/Home";
 import BudgetSelector from "@/components/BudgetSelector";
+import BudgetOverview from "./components/BudgetOverview";
 
 const AuthenticatedRoutes: React.FC<{ user: User }> = ({ user }) => {
   return (
     <UserContext.Provider value={user}>
       <Routes>
         <Route path="/chooseBudget" element={<BudgetSelector />} />
+        <Route path="/budgetOverview" element={<BudgetOverview />} />
       </Routes>
     </UserContext.Provider>
   );

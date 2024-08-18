@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
-import User from "@/types/User";
+import User from "@/views/User";
 
 interface ILoginProps {
   setUser: (user: User) => void;
@@ -83,7 +83,7 @@ const Login: React.FC<ILoginProps> = ({ setUser, isCreate }) => {
         console.error("Failed to create account");
         return;
       }
-      setUser(response.data);
+      setUser(new User(response.data));
       setGotUser(true);
     }).catch(error => {
       console.error(error);
