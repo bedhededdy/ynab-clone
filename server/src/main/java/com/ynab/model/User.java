@@ -6,6 +6,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Index;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -13,17 +15,21 @@ import java.util.List;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = @Index(columnList = "email"))
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NonNull
+    @NotBlank
+    @Column(unique = true)
     private String email;
+
     @NonNull
+    @NotBlank
     private String password;
 
-    // @OneToMany(mappedBy = "user")
-    // private List<Budget> budgets;
-
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
+    private List<Budget> budgets;
 }

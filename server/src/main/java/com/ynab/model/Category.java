@@ -1,7 +1,5 @@
 package com.ynab.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,29 +14,33 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
-@Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "budget", indexes = @Index(columnList = "name"))
-public class Budget {
+@Entity
+@Table(name = "category", indexes = @Index(columnList = "name"))
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // *ECP FIXME: BUDGET NAME SHOULD BE UNIQUE FOR THE USER
-    //             MAY HAVE TO ENFORCE THIS MANUALLY
-    @NonNull
     @NotBlank
+    @NonNull
     private String name;
 
     @NonNull
     @ManyToOne
-    private User user;
+    private CategoryGroup categoryGroup;
 
-    @OneToMany(mappedBy = "budget", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
-    private List<CategoryGroup> categoryGroups;
+    @NonNull
+    private BigDecimal assigned;
 
+    @NonNull
+    private BigDecimal activity;
+
+    @OneToMany(mappedBy = "category")
+    private List<Transaction> transactions;
 }

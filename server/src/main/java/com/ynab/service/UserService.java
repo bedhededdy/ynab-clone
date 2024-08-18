@@ -1,9 +1,12 @@
 package com.ynab.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ynab.repository.UserRepository;
+import com.ynab.model.Budget;
 import com.ynab.model.User;
 
 @Service
@@ -27,5 +30,9 @@ public class UserService {
         User user = new User(email, password);
         user = userRepository.save(user);
         return user.getId();
+    }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 }
