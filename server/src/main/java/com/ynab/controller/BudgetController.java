@@ -1,7 +1,5 @@
 package com.ynab.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ynab.model.Budget;
 import com.ynab.service.BudgetService;
+
+import java.util.stream.Collectors;
+import java.util.List;
 
 import lombok.Data;
 
@@ -57,13 +58,18 @@ public class BudgetController {
         if (budget == null)
             return ResponseEntity.notFound().build();
         // return ResponseEntity.ok(budget);
+        return ResponseEntity.ok(new BudgetResponse(budget));
     }
 
     @GetMapping("/getBudgetList")
     public ResponseEntity<List<BudgetResponse>> getBudgetList(@RequestParam Long userId) {
-        // *ECP FIXME: HOW TO TELL NO BUDGETS VS USER NOT FOUND??
-        //             MAY NEED TO HAVE CUSTOM EXCEPTION
-        // return ResponseEntity.ok(budgetService.getBudgetsForUser(userId));
+        List<Budget> budgets = budgetService.getBudgetsForUser(userId);
+        if (budgets == null || budgets.isEmpty())
+            return ResponseEntity.notFound().build();
+        List<BudgetResponse> budgetResponses = budgets.stream()
+            .map(BudgetResponse::new)
+            .collect(Collectors.toList());
+        return ResponseEntity.ok(budgetResponses);
     }
 
     @PutMapping("/updateBudget")

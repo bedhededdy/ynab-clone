@@ -30,6 +30,9 @@ public class User {
     @NotBlank
     private String password;
 
+    @OneToOne(cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
+    private Budget lastOpenedBudget;
+
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
     private List<Budget> budgets;
 }

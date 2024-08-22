@@ -1,8 +1,9 @@
 package com.ynab.model;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,6 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 
 @Data
@@ -37,6 +40,11 @@ public class Budget {
     @NonNull
     @ManyToOne
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private Month lastAccessedMonth;
+
+    private Year lastAccessedYear;
 
     @OneToMany(mappedBy = "budget", cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.REFRESH}, orphanRemoval = true)
     private List<CategoryGroup> categoryGroups;
