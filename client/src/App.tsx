@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { UserContext } from "@/components/contexts/UserContext";
@@ -15,7 +15,7 @@ const AuthenticatedRoutes: React.FC<{ user: User }> = ({ user }) => {
     <UserContext.Provider value={user}>
       <Routes>
         <Route path="/chooseBudget" element={<BudgetSelector />} />
-        <Route path="/budgetOverview" element={<BudgetOverview />} />
+        <Route path="/budgetOverview/:budgetId" element={<BudgetOverview />} />
       </Routes>
     </UserContext.Provider>
   );
@@ -23,6 +23,13 @@ const AuthenticatedRoutes: React.FC<{ user: User }> = ({ user }) => {
 
 const App: React.FC = () => {
   const [user, setUser]  = useState<User | null>(null);
+
+  // *ECP TODO: ON PAGE REFRESH TRY TO SEE IF THIS CLIENT HAS AN ACTIVE SESSION
+  //            IF SO, WE SHOULD NOT TAKE THEM TO HOME AND INSTEAD LINK
+  //            THEM TO THE BUDGET OVERVIEW AND ALSO SET THE USER CONTEXT
+  useEffect(() => {
+
+  }, [])
 
   return (
     <Router>
