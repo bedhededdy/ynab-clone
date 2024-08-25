@@ -83,7 +83,8 @@ const CreateBudget: React.FC<ICreateBudgetProps> = ({ userId, addBudget }) => {
           <DialogTitle>Create Budget</DialogTitle>
         </DialogHeader>
         <DialogDescription>Create a new budget</DialogDescription>
-        <form onSubmit={e => e.preventDefault}>
+        {/* ECP: FIXME: PRESSNG ENTER DOESN'T WORK? MAYBE NEED TO SET BUTTON TYPE=SUBMIT */}
+        <form onSubmit={e => e.preventDefault()}>
           {/* ECP FIXME: I THINK USING SHADCN FORMS WILL FIX THE SPACING AND MAKE IT ALL CONSISTENT */}
           <Label htmlFor={newBudgetId}>Budget Name</Label>
           <Input id={newBudgetId} type="text" placeholder="New Budget" ref={budgetNameRef} />

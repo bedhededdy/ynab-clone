@@ -2,16 +2,79 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuIndicator,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu"
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { Button } from "@/components/ui/button";
+
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { useHTTPContext } from "@/components/contexts/HTTPContext";
 
-const LeftSidebar: React.FC = () => {
+const LeftSidebar: React.FC<{budgetId: string}> = ({ budgetId }) => {
   return (
     <div className="h-full w-full bg-blue-400">
-      <span>This is my sidebar</span>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button className="w-full" variant="outline">{budgetId}</Button>
+        </DropdownMenuTrigger>
+        {/* ECP FIXME: NEED TO USE JS TO CALC THE WIDTH OF THE BUTTON AND MATCH IT */}
+        <DropdownMenuContent>
+
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <Collapsible>
+        <CollapsibleTrigger asChild>
+          <Button className="w-full" variant="outline">Budget</Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <p>1</p>
+          <p>2</p>
+        </CollapsibleContent>
+      </Collapsible>
+      <Collapsible>
+        <CollapsibleTrigger asChild>
+          <Button className="w-full" variant="outline">Loans</Button>
+        </CollapsibleTrigger>
+      </Collapsible>
+      <Collapsible>
+        <CollapsibleTrigger asChild>
+          <Button className="w-full" variant="outline">Tracking</Button>
+        </CollapsibleTrigger>
+      </Collapsible>
+      <Collapsible>
+        <CollapsibleTrigger asChild>
+          <Button className="w-full" variant="outline">Closed</Button>
+        </CollapsibleTrigger>
+      </Collapsible>
+
     </div>
   );
 }
@@ -74,6 +137,10 @@ const BudgetOverviewRow: React.FC = () => {
 const BudgetOverview: React.FC = () => {
   const { budgetId } = useParams<{budgetId: string}>();
 
+  if (budgetId === undefined) {
+    return;
+  }
+
   const http = useHTTPContext();
 
   useEffect(() => {
@@ -85,7 +152,7 @@ const BudgetOverview: React.FC = () => {
     <div className="h-full w-full">
       <ResizablePanelGroup direction="horizontal" className="w-full h-full">
         <ResizablePanel defaultSize={15} maxSize={30} minSize={10}>
-          <LeftSidebar />
+          <LeftSidebar budgetId={budgetId}/>
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel defaultSize={85}>
